@@ -1,0 +1,48 @@
+
+                            SIM MANAGEMENT PROJECT
+                            _______________________
+
+ CONTENTS OF THIS FILE
+ ---------------------
+
+ * Introduction
+ * Decisions made
+ * Focused on
+ * How to run
+
+
+* INTRODUCTION
+
+  Sim Management application is the solution of managing the customer`s sims. You can store customer details, how many sim
+  he have, which network's sim card he is using, can get sim cards details of customer. Spring Boot
+
+* FOCUSED ON
+
+  >The mail part was new for me so I mostly focused on email part
+  >Managing the relationship between customer and sim
+
+
+ * HOW TO RUN & HOW TO USE
+
+  You can import the project on intelliJ IDEA or any Integrated Development Environment (IDE) and run  it.
+  Application is running on port 8080
+
+  Enter email Id and password in application.properties from which you want to sent the email and also put you'r email
+  id in the Mail service.
+
+  > http://localhost:8080/saveCustomer/ :- Open endpoint in any api testing tools and pass the json with fields. It will
+                                           save the customer details in database.
+  > http://localhost:8080/getSims/ :- By this endpoint you will get the sim details of customer just by passing
+                                     customer id
+  >http://localhost:8080/saveSim :- This endpoint is use to register a new sim on any customer by passing customer id
+                                     with required field of sim
+  >http://localhost:8080/getAllSim :- This endpoint is use to fetch all sim present in the database
+  >http://localhost:8080/downloadExcelFile :- This endpoint will give the excel file containing the  details of customer whose
+                                      birthday tomorrow
+
+  As per the requirement I added a functionality which will send the mail to the customers whose birthday is seven day
+  after from today's date
+
+
+
+
