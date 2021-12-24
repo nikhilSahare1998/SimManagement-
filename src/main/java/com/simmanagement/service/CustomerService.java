@@ -10,17 +10,16 @@ import com.simmanagement.repository.CustomerRepository;
 import com.simmanagement.repository.SimRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import java.io.ByteArrayOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,7 +65,6 @@ public class CustomerService {
         return "Sim Save Successfully";
     }
 
-
     public List<SimDTO> getAllSim() {
         logger.info("Fetching Sims..... ");
         List<SimDTO> simDTOS = new ArrayList<>();
@@ -102,12 +100,12 @@ public class CustomerService {
 
 
     public String[] getMailAfterSevenDay() {
-        return customerRepository.findAll().stream().filter(i -> i.getDateOfBirth() == LocalDate.now().plusDays(7)).map(e -> e.getEmailId()).collect(Collectors.toList()).toArray(String[]::new);
+        return customerRepository.getCustomer().stream().map(e->e.getEmailId()).collect(Collectors.toList()).toArray(String[]::new);
+
     }
 
-    //public List<CustomerSimDTO> dailyExport() {
     public ByteArrayInputStream dailyExport() {
-        List<Customer> collect = customerRepository.findAll().stream().filter(i -> i.getDateOfBirth() == LocalDate.now().plusDays(1)).collect(Collectors.toList());
+        List<Customer> collect = customerRepository.getCustomersListOneDayBeforeBirthday();
         logger.info("dailyExport Method executed...");
         List<CustomerSimDTO> customerSimDTOS = new ArrayList<>();
         for (Customer c : collect) {
@@ -126,7 +124,7 @@ public class CustomerService {
             customerSimDTOS.add(customerSimDTO);
         }
 
-        try(Workbook workbook = new XSSFWorkbook()){
+        try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Daily Export");
 
             Row row = sheet.createRow(0);
@@ -162,7 +160,7 @@ public class CustomerService {
             cell.setCellStyle(headerCellStyle);
 
             // Creating data rows
-            for(int i = 0; i < customerSimDTOS.size(); i++) {
+            for (int i = 0; i < customerSimDTOS.size(); i++) {
                 Row dataRow = sheet.createRow(i + 1);
                 dataRow.createCell(0).setCellValue(customerSimDTOS.get(i).getCustId());
                 dataRow.createCell(1).setCellValue(customerSimDTOS.get(i).getFullName());
@@ -189,9 +187,7 @@ public class CustomerService {
 
     }
 
-
-       // return customerSimDTOS;
-    }
+}
 
 
 
